@@ -9,6 +9,7 @@ import UIKit
 import Metal
 import MetalKit
 import ARKit
+import AVFoundation // 카메라 권한
 
 extension MTKView : RenderDestinationProvider {
 }
@@ -20,6 +21,9 @@ class ViewController: UIViewController, MTKViewDelegate, ARSessionDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 카메라 권한
+        checkCameraPermission()
         
         // Set the view's delegate
         session = ARSession()
@@ -63,6 +67,29 @@ class ViewController: UIViewController, MTKViewDelegate, ARSessionDelegate {
         session.pause()
     }
     
+    // 카메라 권한 확인 & 요청
+    func checkCameraPermission() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .authorized:
+            print("카메라 접근 허용")
+        case .notDetermined:
+            requestCameraPermission()
+        default:
+            print("카메라 접근 거부")
+        }
+    }
+    
+    func requestCameraPermission() {
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            if granted {
+                print("카메라 접근 허용")
+            } else {
+                print("카메라 접근 거부")
+            }
+            
+        }
+    }
     @objc
     func handleTap(gestureRecognize: UITapGestureRecognizer) {
         // Create anchor using the camera's current position
