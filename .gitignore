@@ -1,3 +1,13 @@
-.DS_Store
+# Xcode files
+*.xcuserstate
+*.xcworkspace
 ARTrashDetect.xcodeproj/project.xcworkspace/
 ARTrashDetect.xcodeproj/xcuserdata/
+DerivedData/
+build/
+
+# Swift Package Manager
+/.build/
+
+# macOS system files
+.DS_Store
